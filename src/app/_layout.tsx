@@ -1,51 +1,17 @@
-import { Text, TextInput, TouchableOpacity, View } from "react-native";
-import { SafeAreaView } from "react-native-safe-area-context";
-import "../../global.css";
+import { ClerkProvider } from "@clerk/expo";
+import { tokenCache } from "@clerk/expo/token-cache";
+import { Slot } from "expo-router";
+
+const publishableKey = process.env.EXPO_PUBLIC_CLERK_PUBLISHABLE_KEY!;
+
+if (!publishableKey) {
+  throw new Error(`Add Your Clerk Publishable key to the env.`);
+}
 
 export default function RootLayout() {
   return (
-    <SafeAreaView style={{ flex: 1, backgroundColor: "#ffff" }}>
-      <View
-        style={{
-          padding: 16,
-          marginTop: 12,
-          borderRadius: 12,
-          borderColor: "#ddd",
-        }}
-      >
-        <Text>City</Text>
-
-        <TextInput
-          placeholder="search city...."
-          placeholderTextColor="#999"
-          style={{
-            borderWidth: 1,
-            borderColor: "#ddd",
-            alignItems: "center",
-            borderRadius: 8,
-            padding: 10,
-            marginTop: 12,
-          }}
-        />
-
-        <TouchableOpacity
-          onPress={() => alert("your request is submitted")}
-          style={{
-            backgroundColor: "#00f",
-            padding: 12,
-            marginTop: 10,
-            alignItems: "center",
-            borderRadius: 8,
-          }}
-        >
-          <Text style={{ color: "#fff" }}>Search</Text>
-        </TouchableOpacity>
-      </View>
-      <View className="flex-1 items-center justify-center bg-white">
-        <Text className="text-xl font-bold text-blue-600">
-          Welcome to Nativewind!
-        </Text>
-      </View>
-    </SafeAreaView>
+    <ClerkProvider publishableKey={publishableKey} tokenCache={tokenCache}>
+      <Slot />
+    </ClerkProvider>
   );
 }
